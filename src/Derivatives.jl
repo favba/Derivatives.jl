@@ -21,7 +21,7 @@ function dx(field::AbstractArray{T,3},len::Real,n::Integer=1) where T<:Union{Flo
   nx,ny,nz = size(field)
 
   fieldhat = rfft(field,1)
-  @fastmath kim = (rfftfreq(nx,len) .* im) .^ n
+  @fastmath kim = (2π .* rfftfreq(nx,len) .* im) .^ n
 
   loopdx!(fieldhat,kim)
 
@@ -44,7 +44,7 @@ function dy(field::AbstractArray{T,3},len::Real,n::Integer=1) where T<:Union{Flo
 
   fieldhat = rfft(field,2)
 
-  @fastmath kim = (rfftfreq(ny,len) .* im) .^ n
+  @fastmath kim = (2π .* rfftfreq(ny,len) .* im) .^ n
 
   loopdy!(fieldhat,kim)
 
@@ -67,7 +67,7 @@ function dz(field::AbstractArray{T,3},len::Real,n::Integer=1) where T<:Union{Flo
 
   fieldhat = rfft(field,3)
 
-  @fastmath kim = (rfftfreq(nz,len) .* im) .^ n
+  @fastmath kim = (2π .* rfftfreq(nz,len) .* im) .^ n
 
   loopdz!(fieldhat,kim)
 
@@ -80,7 +80,7 @@ function dx!(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<
 
   rfft!(field,1)
 
-  @fastmath kim = (rfftfreq(nx,len) .* im) .^ n
+  @fastmath kim = (2π .* rfftfreq(nx,len) .* im) .^ n
 
   loopdx!(complex(field),kim)
 
@@ -89,7 +89,8 @@ end
 
 function dx(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<:Union{Float64,Float32},L}
   fieldhat = copy(field)
-  return dx!(fieldhat,len,n)
+  dx!(fieldhat,len,n)
+  return fieldhat
 end
 
 function dy!(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<:Union{Float64,Float32},L}
@@ -97,7 +98,7 @@ function dy!(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<
   nx,ny,nz = size(real(field))
   rfft!(field,1:2)
 
-  @fastmath kim = (fftfreq(ny,len) .* im) .^ n
+  @fastmath kim = (2π .* fftfreq(ny,len) .* im) .^ n
 
   loopdy!(complex(field),kim)
 
@@ -106,7 +107,8 @@ end
 
 function dy(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<:Union{Float64,Float32},L}
   fieldhat = copy(field)
-  return dy!(fieldhat,len,n)
+  dy!(fieldhat,len,n)
+  return fieldhat
 end
 
 
@@ -115,7 +117,7 @@ function dz!(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<
   nx,ny,nz = size(real(field))
   rfft!(field,(1,3))
 
-  @fastmath kim = (fftfreq(nz,len) .* im) .^ n
+  @fastmath kim = (2π .* fftfreq(nz,len) .* im) .^ n
 
   loopdz!(complex(field),kim)
 
@@ -124,7 +126,8 @@ end
 
 function dz(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<:Union{Float64,Float32},L}
   fieldhat = copy(field)
-  return dz!(fieldhat,len,n)
+  dz!(fieldhat,len,n)
+  return fieldhat
 end
 
 
