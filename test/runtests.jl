@@ -5,10 +5,11 @@ using Base.Test
 #=
 Test function: f = sin(3x)*cos(3y)*sin(4z)
 =#
+for (lx,ly,lz) in ((1.,1.,1.),(2.,2.,2.),(3.,3.,3.))
 
-lx = 1.0
-ly = 1.0
-lz = 1.0
+# lx = 1.0
+# ly = 1.0
+# lz = 1.0
 
 nx = 32
 ny = 32
@@ -52,3 +53,5 @@ rfft!(field2)
 @inferred Derivatives.loopdx!(complex(field2),rfftfreq(nx,lx))
 @inferred Derivatives.loopdy!(complex(field2),fftfreq(ny,ly))
 @inferred Derivatives.loopdz!(complex(field2),fftfreq(nz,lz))
+
+end
