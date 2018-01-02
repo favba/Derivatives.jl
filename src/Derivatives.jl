@@ -1,7 +1,7 @@
 __precompile__()
 module Derivatives
 
-using InplaceRealFFTW
+using InplaceRealFFT
 using LESFilter: rfftfreq, fftfreq
 
 export dx, dy, dz, dx!, dy!, dz!
@@ -74,7 +74,7 @@ function dz(field::AbstractArray{T,3},len::Real,n::Integer=1) where T<:Union{Flo
   return irfft(fieldhat,nz,3)
 end
 
-function dx!(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<:Union{Float64,Float32},L}
+function dx!(field::AbstractPaddedArray{T,3},len::Real,n::Integer=1) where {T<:Union{Float64,Float32}}
 
   nx,ny,nz = size(real(field))
 
@@ -87,13 +87,13 @@ function dx!(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<
   return irfft!(field,1)
 end
 
-function dx(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<:Union{Float64,Float32},L}
+function dx(field::AbstractPaddedArray{T,3},len::Real,n::Integer=1) where {T<:Union{Float64,Float32}}
   fieldhat = copy(field)
   dx!(fieldhat,len,n)
   return fieldhat
 end
 
-function dy!(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<:Union{Float64,Float32},L}
+function dy!(field::AbstractPaddedArray{T,3},len::Real,n::Integer=1) where {T<:Union{Float64,Float32}}
 
   nx,ny,nz = size(real(field))
   rfft!(field,1:2)
@@ -105,14 +105,14 @@ function dy!(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<
   return irfft!(field,1:2)
 end
 
-function dy(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<:Union{Float64,Float32},L}
+function dy(field::AbstractPaddedArray{T,3},len::Real,n::Integer=1) where {T<:Union{Float64,Float32}}
   fieldhat = copy(field)
   dy!(fieldhat,len,n)
   return fieldhat
 end
 
 
-function dz!(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<:Union{Float64,Float32},L}
+function dz!(field::AbstractPaddedArray{T,3},len::Real,n::Integer=1) where {T<:Union{Float64,Float32}}
 
   nx,ny,nz = size(real(field))
   rfft!(field,(1,3))
@@ -124,7 +124,7 @@ function dz!(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<
   return irfft!(field,(1,3))
 end
 
-function dz(field::AbstractPaddedArray{T,3,L},len::Real,n::Integer=1) where {T<:Union{Float64,Float32},L}
+function dz(field::AbstractPaddedArray{T,3},len::Real,n::Integer=1) where {T<:Union{Float64,Float32}}
   fieldhat = copy(field)
   dz!(fieldhat,len,n)
   return fieldhat

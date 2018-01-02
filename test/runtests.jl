@@ -1,4 +1,4 @@
-using Derivatives, InplaceRealFFTW
+using Derivatives, InplaceRealFFT
 using LESFilter: rfftfreq, fftfreq
 using Base.Test
 
