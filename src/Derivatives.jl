@@ -8,12 +8,14 @@ export dx, dy, dz, dx!, dy!, dz!
 
 function loopdx!(fieldhat::AbstractArray{<:Complex,3}, kim::AbstractVector) 
   nx,ny,nz = size(fieldhat)
+  let nx = nx, ny = ny, nz = nz
   Threads.@threads for l = 1:nz
     for j = 1:ny
       @simd for i = 1:nx
       @inbounds fieldhat[i,j,l] = fieldhat[i,j,l]*kim[i]
       end
     end
+  end
   end
 end
 
@@ -30,12 +32,14 @@ end
 
 function loopdy!(fieldhat::AbstractArray{<:Complex,3}, kim::AbstractVector) 
   nx,ny,nz = size(fieldhat)
+  let nx = nx, ny = ny, nz = nz
   Threads.@threads for l = 1:nz
     for j = 1:ny
       @simd for i = 1:nx
         @inbounds fieldhat[i,j,l] = fieldhat[i,j,l]*kim[j]
       end
     end
+  end
   end
 end
 
@@ -53,12 +57,14 @@ end
 
 function loopdz!(fieldhat::AbstractArray{<:Complex,3}, kim::AbstractVector) 
   nx,ny,nz = size(fieldhat)
+  let nx = nx, ny = ny, nz = nz
   Threads.@threads for l = 1:nz
     for j = 1:ny
       @simd for i = 1:nx
         @inbounds fieldhat[i,j,l] = fieldhat[i,j,l]*kim[l]
       end
     end
+  end
   end
 end
 
