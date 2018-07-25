@@ -88,7 +88,7 @@ function dx!(field::AbstractPaddedArray{T,3},len::Real,n::Integer=1) where {T<:U
 
   kim = (2π .* rfftfreq(nx,len) .* im) .^ n
 
-  loopdx!(complex(field),kim)
+  loopdx!(InplaceRealFFT.complex_view(field),kim)
 
   return irfft!(field,1)
 end
@@ -106,7 +106,7 @@ function dy!(field::AbstractPaddedArray{T,3},len::Real,n::Integer=1) where {T<:U
 
   kim = (2π .* fftfreq(ny,len) .* im) .^ n
 
-  loopdy!(complex(field),kim)
+  loopdy!(InplaceRealFFT.complex_view(field),kim)
 
   return irfft!(field,1:2)
 end
@@ -125,7 +125,7 @@ function dz!(field::AbstractPaddedArray{T,3},len::Real,n::Integer=1) where {T<:U
 
   kim = (2π .* fftfreq(nz,len) .* im) .^ n
 
-  loopdz!(complex(field),kim)
+  loopdz!(InplaceRealFFT.complex_view(field),kim)
 
   return irfft!(field,(1,3))
 end
